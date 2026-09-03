@@ -280,34 +280,44 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // Static File Serving
-  let filePath = path.join(__dirname, pathname === '/' ? 'index.html' : pathname);
+  // Static File Serving (Auto-detect production dist/ bundle)
+  const distIndex = path.join(__dirname, 'dist', 'index.html');
+  const STATIC_DIR = fs.existsSync(distIndex) ? path.join(__dirname, 'dist') : __dirname;
+
+  let filePath = path.join(STATIC_DIR, pathname === '/' ? 'index.html' : pathname);
+
+  // Fallback to project root if asset is not in dist
+  if (!fs.existsSync(filePath) && fs.existsSync(path.join(__dirname, pathname))) {
+    filePath = path.join(__dirname, pathname);
+  }
 
   // Security: prevent path traversal
-  if (!filePath.startsWith(__dirname)) {
+  const resolvedPath = path.resolve(filePath);
+  if (!resolvedPath.startsWith(__dirname)) {
     res.writeHead(403);
     res.end('Forbidden');
     return;
   }
 
-  fs.stat(filePath, (err, stats) => {
+  fs.stat(resolvedPath, (err, stats) => {
     if (err || !stats.isFile()) {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.end('404 Not Found');
       return;
     }
 
-    const ext = path.extname(filePath).toLowerCase();
+    const ext = path.extname(resolvedPath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
     res.writeHead(200, {
       'Content-Type': contentType,
       'Cache-Control': 'no-cache, must-revalidate'
     });
-    fs.createReadStream(filePath).pipe(res);
+    fs.createReadStream(resolvedPath).pipe(res);
   });
 });
 
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 PogX Waitlist server running at http://0.0.0.0:${PORT}`);
+  const isDist = fs.existsSync(path.join(__dirname, 'dist', 'index.html'));
+  console.log(`🚀 PogX Waitlist server running at http://0.0.0.0:${PORT} [${isDist ? 'PRODUCTION (dist/ bundle)' : 'DEVELOPMENT'}]`);
 });

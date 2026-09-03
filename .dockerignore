@@ -6,4 +6,5 @@ npm-debug.log*
 pogx-desktop-preview.png
 pogx-mobile-preview.png
 deploy
+dist
 .DS_Store

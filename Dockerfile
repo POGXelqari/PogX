@@ -1,8 +1,30 @@
 # ==============================================================================
-# PogX Production Dockerfile
-# Optimized for Hyperlift / Docker deployments
+# PogX Production Multi-Stage Dockerfile
+# Optimized for Hyperlift / VPS / Docker deployments
 # ==============================================================================
 
+# ------------------------------------------------------------------------------
+# Stage 1: Build & Obfuscate Frontend Bundle
+# ------------------------------------------------------------------------------
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package descriptors
+COPY package*.json ./
+
+# Install all dependencies (including dev build tools)
+RUN npm ci
+
+# Copy source code and scripts
+COPY . .
+
+# Execute production minification and obfuscation pipeline -> /app/dist
+RUN npm run build
+
+# ------------------------------------------------------------------------------
+# Stage 2: Minimal Production Runner
+# ------------------------------------------------------------------------------
 FROM node:20-alpine AS runner
 
 WORKDIR /app
@@ -16,11 +38,12 @@ ENV WAITLIST_FILE=/app/data/waitlist.json
 # Copy package descriptors
 COPY package*.json ./
 
-# Install production dependencies only
+# Install production dependencies only (no dev tools in production image)
 RUN npm ci --omit=dev
 
-# Copy application source code and static assets
-COPY . .
+# Copy server code and production build output (unobfuscated frontend is NOT included!)
+COPY server.js ./
+COPY --from=builder /app/dist ./dist
 
 # Create persistent storage directory and set non-root ownership
 RUN mkdir -p /app/data && chown -R node:node /app
