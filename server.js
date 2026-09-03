@@ -16,7 +16,6 @@ if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 const WAITLIST_FILE = process.env.WAITLIST_FILE || path.join(DATA_DIR, 'waitlist.json');
-const BASE_COUNT = 1420;
 
 // Initialize waitlist file if not exists
 if (!fs.existsSync(WAITLIST_FILE)) {
@@ -25,15 +24,24 @@ if (!fs.existsSync(WAITLIST_FILE)) {
 
 function getSubscribers() {
   try {
+    if (!fs.existsSync(WAITLIST_FILE)) {
+      fs.writeFileSync(WAITLIST_FILE, '[]', 'utf-8');
+      return [];
+    }
     const raw = fs.readFileSync(WAITLIST_FILE, 'utf-8');
-    return JSON.parse(raw);
-  } catch {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    console.error('Error reading waitlist file:', err.message);
     return [];
   }
 }
 
 function saveSubscribers(list) {
-  fs.writeFileSync(WAITLIST_FILE, JSON.stringify(list, null, 2), 'utf-8');
+  // Atomic write to prevent file corruption on concurrent requests
+  const tempFile = `${WAITLIST_FILE}.tmp.${Date.now()}`;
+  fs.writeFileSync(tempFile, JSON.stringify(list, null, 2), 'utf-8');
+  fs.renameSync(tempFile, WAITLIST_FILE);
 }
 
 // Setup nodemailer transporter
@@ -196,7 +204,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && pathname === '/api/waitlist-count') {
     const list = getSubscribers();
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ count: BASE_COUNT + list.length }));
+    res.end(JSON.stringify({ count: list.length }));
     return;
   }
 
@@ -231,18 +239,23 @@ const server = http.createServer(async (req, res) => {
             alreadyRegistered: true,
             position: existing.position,
             referralCode: existing.referralCode,
-            total: BASE_COUNT + list.length
+            total: list.length
           }));
           return;
         }
 
-        const position = BASE_COUNT + list.length + 1;
+        const clientIp = (req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',')[0].trim();
+        const userAgent = req.headers['user-agent'] || '';
+
+        const position = list.length + 1;
         const referralCode = 'POG' + Math.random().toString(36).substring(2, 7).toUpperCase();
         const newRecord = {
           email,
           position,
           referralCode,
           refSource: data.ref || null,
+          ip: clientIp,
+          userAgent,
           createdAt: new Date().toISOString()
         };
 
@@ -257,7 +270,7 @@ const server = http.createServer(async (req, res) => {
           success: true,
           position,
           referralCode,
-          total: BASE_COUNT + list.length
+          total: list.length
         }));
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json' });

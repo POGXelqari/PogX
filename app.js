@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeTermsBtn = document.getElementById('close-terms-btn');
 
   const LOCAL_STORAGE_KEY = 'pogx_waitlist_data';
-  const BASE_COUNT = 1420;
 
   // Extract referral code from URL query params if present
   const urlParams = new URLSearchParams(window.location.search);
@@ -45,6 +44,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize count and check saved state
   fetchInitialCount();
   checkSavedSubmission();
+
+  // Helper to format real subscriber count in UI
+  function updateProofCounter(count) {
+    if (!proofCountEl) return;
+    if (typeof count !== 'number' || count <= 0) {
+      proofCountEl.textContent = 'Early access queue open';
+    } else if (count === 1) {
+      proofCountEl.innerHTML = '<strong>1</strong> creator on the waitlist';
+    } else {
+      proofCountEl.innerHTML = `<strong>${count.toLocaleString()}</strong> creators on the waitlist`;
+    }
+  }
 
   // Handle Form Submission
   form.addEventListener('submit', async (e) => {
@@ -71,29 +82,15 @@ document.addEventListener('DOMContentLoaded', () => {
     setLoading(true);
 
     try {
-      let data;
-      // Check if we are running in an environment with the backend API
-      const isHttp = window.location.protocol.startsWith('http');
-      
-      if (isHttp) {
-        try {
-          const res = await fetch('/api/waitlist', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, ref: refParam }),
-          });
-          data = await res.json();
-          if (!res.ok) {
-            throw new Error(data.error || 'Unable to join waitlist. Please try again.');
-          }
-        } catch (fetchErr) {
-          // If the backend is not reached, fall back to offline simulation
-          console.warn('Backend API not responding, using local fallback:', fetchErr.message);
-          data = createLocalSubmission(email);
-        }
-      } else {
-        // file:// or static preview fallback
-        data = createLocalSubmission(email);
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, ref: refParam }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Unable to join waitlist. Please try again.');
       }
 
       // Save submission locally
@@ -103,15 +100,17 @@ document.addEventListener('DOMContentLoaded', () => {
         referralCode: data.referralCode,
       });
 
-      // Update UI
+      // Update UI with real server data
       renderSuccess(email, data.position, data.referralCode);
-      if (data.total && proofCountEl) {
-        proofCountEl.textContent = `${data.total.toLocaleString()}+`;
+      if (typeof data.total === 'number') {
+        updateProofCounter(data.total);
       }
 
-      showToast(data.alreadyRegistered ? 'Welcome back! Here is your position.' : "You're in! Welcome to PogX.");
+      showToast(data.alreadyRegistered 
+        ? `Welcome back! Your spot is #${data.position}.` 
+        : `You're in! Reserved Spot #${data.position}.`);
     } catch (err) {
-      showError(err.message || 'An unexpected error occurred. Please try again.');
+      showError(err.message || 'Unable to reach the server. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -264,30 +263,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function createLocalSubmission(email) {
-    const position = BASE_COUNT + Math.floor(Math.random() * 20) + 1;
-    const referralCode = 'POG' + Math.random().toString(36).substring(2, 7).toUpperCase();
-    return {
-      success: true,
-      position,
-      referralCode,
-      total: position,
-    };
-  }
-
   async function fetchInitialCount() {
     try {
       if (window.location.protocol.startsWith('http')) {
         const res = await fetch('/api/waitlist-count');
         if (res.ok) {
           const data = await res.json();
-          if (data.count && proofCountEl) {
-            proofCountEl.textContent = `${data.count.toLocaleString()}+`;
-          }
+          updateProofCounter(data.count);
         }
       }
     } catch {
-      // gracefully keep default 1,420+
+      // Keep default 'Early access queue open'
     }
   }
 
