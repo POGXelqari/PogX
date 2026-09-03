@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # PogX Application Container
+  pogx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pogx-app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - SMTP_HOST=${SMTP_HOST:-mail.spacemail.com}
+      - SMTP_PORT=${SMTP_PORT:-465}
+      - SMTP_SECURE=${SMTP_SECURE:-true}
+      - SMTP_USER=${SMTP_USER:-updates@pogx.net}
+      - SMTP_PASS=${SMTP_PASS:-PogXonTop005$}
+      - FROM_EMAIL=${FROM_EMAIL:-"PogX" <updates@pogx.net>}
+      - DATA_DIR=/app/data
+      - WAITLIST_FILE=/app/data/waitlist.json
+    volumes:
+      - pogx-data:/app/data
+
+  # Cloudflare Tunnel Sidecar (Optional: Set TUNNEL_TOKEN in your environment)
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: pogx-tunnel
+    restart: always
+    network_mode: host
+    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    depends_on:
+      - pogx
+
+volumes:
+  pogx-data:
+    driver: local

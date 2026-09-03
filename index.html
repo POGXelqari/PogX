@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PogX — Where Content Creators Compete</title>
+  
+  <meta name="description" content="The premier competitive arena for content creators. Challenge rivals to head-to-head creative showdowns, let audiences back their favorites, and claim verified glory.">
+  <meta name="keywords" content="PogX, content creators, creator competition, creator arena, head to head, waitlist">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="pogx-logo.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="pogx-logo.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="pogx-logo.png">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="PogX — Where Content Creators Compete">
+  <meta property="og:description" content="Join the waitlist for the premier competitive platform for content creators.">
+  <meta property="og:image" content="pogx-logo.png">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <!-- Ambient background glow & subtle grid -->
+  <div class="bg-glow" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="header" role="banner">
+    <div class="container header-container">
+      <a href="/" class="brand" aria-label="PogX Homepage">
+        <img src="pogx-logo.png" alt="PogX Logo" class="brand-logo" width="34" height="34">
+        <span class="brand-name">Pog<span class="brand-accent">X</span></span>
+        <span class="badge-tag" aria-label="Beta status">Cohort 01</span>
+      </a>
+
+      <nav class="nav" aria-label="Main Navigation">
+        <button type="button" class="nav-link-btn" id="open-manifesto-btn" aria-haspopup="dialog">
+          Manifesto
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main" id="main-content">
+    <div class="container">
+      
+      <!-- Hero Section -->
+      <section class="hero" aria-labelledby="hero-title">
+        <!-- Live status pill -->
+        <div class="status-pill" role="status">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span class="status-text">Private Alpha Waitlist Now Open</span>
+          <span class="status-divider" aria-hidden="true">•</span>
+          <span class="status-highlight">Cohort 01</span>
+        </div>
+
+        <!-- Benefit-driven Headline -->
+        <h1 id="hero-title" class="hero-title">
+          Where creators compete.<br>
+          <span class="hero-title-accent">Where legends rise.</span>
+        </h1>
+
+        <!-- Short supporting paragraph -->
+        <p class="hero-desc">
+          The competitive arena built specifically for top creators. Challenge rivals to head-to-head content showdowns, rally your community in live-stake battles, and secure your place on the global creator leaderboard.
+        </p>
+
+        <!-- Waitlist Form Container -->
+        <div class="waitlist-card" id="waitlist-card">
+          <!-- Form View -->
+          <form id="waitlist-form" class="waitlist-form" novalidate>
+            <div class="form-input-group">
+              <label for="email-input" class="sr-only">Creator Email Address</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                </svg>
+                <input 
+                  type="email" 
+                  id="email-input" 
+                  name="email" 
+                  placeholder="Enter your creator email..." 
+                  autocomplete="email" 
+                  spellcheck="false" 
+                  required
+                  aria-describedby="form-hint form-error"
+                >
+              </div>
+
+              <button type="submit" id="submit-btn" class="btn-primary">
+                <span class="btn-text">Join the Waitlist</span>
+                <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+                <span class="btn-spinner" aria-hidden="true"></span>
+              </button>
+            </div>
+
+            <!-- Error message container -->
+            <div id="form-error" class="form-error" role="alert" aria-live="polite"></div>
+
+            <!-- Microcopy -->
+            <p id="form-hint" class="microcopy">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              No spam. Early access updates & private beta invites only.
+            </p>
+          </form>
+
+          <!-- Success View (Hidden by default) -->
+          <div id="waitlist-success" class="waitlist-success hidden" role="region" aria-label="Waitlist Confirmation">
+            <div class="success-icon-badge" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            
+            <h2 class="success-title">You're on the list.</h2>
+            <p class="success-subtext">
+              We've reserved your priority access. Confirmation sent to <strong id="confirmed-email" class="confirmed-email">you@example.com</strong>.
+            </p>
+
+            <div class="position-ticket">
+              <div class="ticket-header">
+                <span class="ticket-label">Priority Queue</span>
+                <span class="ticket-cohort">Cohort 01</span>
+              </div>
+              <div class="ticket-number">
+                <span class="ticket-hash">#</span><span id="queue-position-display">1,421</span>
+              </div>
+              <div class="ticket-note">Invite fellow creators to move up the queue</div>
+            </div>
+
+            <div class="referral-box">
+              <label for="referral-link-input" class="sr-only">Your exclusive referral link</label>
+              <div class="referral-input-wrap">
+                <input type="text" id="referral-link-input" readonly value="https://pogx.net/?ref=POGX1421">
+                <button type="button" id="copy-ref-btn" class="btn-copy" aria-label="Copy referral link">
+                  <span id="copy-btn-text">Copy Link</span>
+                </button>
+              </div>
+            </div>
+
+            <button type="button" id="reset-form-btn" class="btn-reset">
+              Register another email
+            </button>
+          </div>
+        </div>
+
+        <!-- Compact Social-Proof Element -->
+        <div class="social-proof" aria-label="Waitlist community size">
+          <div class="avatar-stack" aria-hidden="true">
+            <span class="avatar av-1" title="Creator Kai">K</span>
+            <span class="avatar av-2" title="Creator Lex">L</span>
+            <span class="avatar av-3" title="Creator Maya">M</span>
+            <span class="avatar av-4" title="Creator Dex">D</span>
+            <span class="avatar av-5" title="Creator Zola">Z</span>
+          </div>
+          <div class="social-proof-text">
+            <span class="proof-count"><strong id="proof-count-display">1,420+</strong> creators queued</span>
+            <span class="proof-sub">Top streamers, YouTubers, and digital artists</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Three-item Benefits Section -->
+      <section class="benefits" aria-labelledby="benefits-heading">
+        <h2 id="benefits-heading" class="sr-only">Platform Features & Benefits</h2>
+        
+        <div class="benefits-grid">
+          <!-- Benefit 1 -->
+          <article class="benefit-card">
+            <div class="benefit-icon-wrapper" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            </div>
+            <h3 class="benefit-title">Head-to-Head Arenas</h3>
+            <p class="benefit-desc">
+              Challenge peers to time-locked creative bouts. Transparent constraints, synchronized drops, and zero algorithmic interference.
+            </p>
+          </article>
+
+          <!-- Benefit 2 -->
+          <article class="benefit-card">
+            <div class="benefit-icon-wrapper" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <h3 class="benefit-title">Live Audience Stakes</h3>
+            <p class="benefit-desc">
+              Audiences don't just scroll—they back their champions. Real-time voting, anti-bot fraud detection, and authentic fan engagement.
+            </p>
+          </article>
+
+          <!-- Benefit 3 -->
+          <article class="benefit-card">
+            <div class="benefit-icon-wrapper" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                <path d="M4 22h16"></path>
+                <path d="M10 14.66V17c0 .55-.45 1-1 1H7"></path>
+                <path d="M14 14.66V17c0 .55.45 1 1 1h2"></path>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+              </svg>
+            </div>
+            <h3 class="benefit-title">Verified Glory & Pools</h3>
+            <p class="benefit-desc">
+              Smart escrow-backed prize pools and an immutable Elo ladder that cements your reputation across creator ecosystems.
+            </p>
+          </article>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container footer-container">
+      <div class="footer-left">
+        <div class="footer-brand">
+          <img src="pogx-logo.png" alt="" class="footer-logo" width="20" height="20" aria-hidden="true">
+          <span class="footer-name">PogX</span>
+        </div>
+        <p class="footer-copy">© 2026 PogX Inc. All rights reserved.</p>
+      </div>
+
+      <div class="footer-links">
+        <button type="button" class="footer-link-btn" id="open-privacy-btn">Privacy Policy</button>
+        <span class="footer-dot" aria-hidden="true">•</span>
+        <button type="button" class="footer-link-btn" id="open-terms-btn">Terms of Access</button>
+        <span class="footer-dot" aria-hidden="true">•</span>
+        <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="PogX on X / Twitter">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          <span>X / Twitter</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Accessible Modal: Manifesto -->
+  <div id="manifesto-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="manifesto-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="manifesto-title" class="modal-heading">The PogX Manifesto</h2>
+        <button type="button" class="modal-close-btn" id="close-manifesto-btn" aria-label="Close dialog">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>The creator economy is stagnant. Endless passive scrolling, volatile algorithms, and vanity metrics have decoupled creators from the raw thrill of competition.</p>
+        <p><strong>PogX changes the paradigm.</strong> We are engineering a high-stakes arena where content creators clash in direct, skill-based challenges. Here, your craft is tested in real time, your community stands behind you, and the victor takes the prize and the ranking.</p>
+        <p>No shadowbans. No algorithm games. Just raw talent, community stakes, and verifiable triumphs.</p>
+        <div class="modal-action">
+          <button type="button" class="btn-primary modal-action-btn" id="manifesto-join-btn">Join Cohort 01</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessible Modal: Privacy -->
+  <div id="privacy-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="privacy-title" class="modal-heading">Privacy Commitment</h2>
+        <button type="button" class="modal-close-btn" id="close-privacy-btn" aria-label="Close dialog">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>At PogX, we believe privacy is fundamental to trust:</p>
+        <ul class="privacy-list">
+          <li><strong>Zero Spam:</strong> We will only email you regarding your waitlist status, early beta keys, and direct platform access.</li>
+          <li><strong>Data Respect:</strong> We never sell or share your contact info with third-party brokers or advertisers.</li>
+          <li><strong>Instant Unsubscribe:</strong> You can leave the waitlist with a single click at any time.</li>
+        </ul>
+        <p>For questions, contact our founding team at <a href="mailto:updates@pogx.net" class="accent-link">updates@pogx.net</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessible Modal: Terms of Access -->
+  <div id="terms-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="terms-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="terms-title" class="modal-heading">Terms of Early Access</h2>
+        <button type="button" class="modal-close-btn" id="close-terms-btn" aria-label="Close dialog">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Welcome to the PogX Early Access Program. Participation in Cohort 01 is governed by fair competition guidelines:</p>
+        <ul class="privacy-list">
+          <li><strong>Authentic Creators:</strong> Cohort 01 invitations are prioritized for verified creators across Twitch, YouTube, Kick, TikTok, and digital art platforms.</li>
+          <li><strong>Zero Tolerance for Abuse:</strong> Botting, fraudulent voting, or vote manipulation results in permanent removal.</li>
+          <li><strong>Rolling Onboarding:</strong> Access keys are distributed in sequenced batches according to queue position and referral rank.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+[Unit]
+Description=PogX Creator Waitlist Application
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/pogx
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+Environment=PORT=3000
+
+# Security sandboxing
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
