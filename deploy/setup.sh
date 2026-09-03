@@ -79,6 +79,19 @@ ufw allow 'Nginx Full'
 echo "y" | ufw enable || true
 echo "✅ UFW firewall active."
 
+# 9. Cloudflare Tunnel Setup (if token provided)
+CLOUDFLARE_TOKEN="${TUNNEL_TOKEN:-eyJhIjoiYjM5YmRiNThlZTRkZTc5ZmY4YWM4NGNkZDg0MjBlYTgiLCJ0IjoiZTc3NTU2OGEtMDk3YS00NGNiLTllYjAtODAyMzQyNjJkODg1IiwicyI6Ik5EVmpNalpoTURVdE4yTmlPQzAwTmpBeExXSXpaamN0WW1VNU56UTRNall6TUdReCJ9}"
+if [ -n "${CLOUDFLARE_TOKEN}" ]; then
+    echo "☁️ Installing Cloudflare Tunnel..."
+    mkdir -p --mode=0755 /usr/share/keyrings
+    curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null
+    echo 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared any main' | tee /etc/apt/sources.list.d/cloudflared.list
+    apt-get update && apt-get install -y cloudflared
+    cloudflared service install "${CLOUDFLARE_TOKEN}" || true
+    systemctl restart cloudflared || true
+    echo "✅ Cloudflare Tunnel service installed and active."
+fi
+
 echo "========================================================"
 echo "🎉 PogX is successfully deployed and running!"
 echo "========================================================"
