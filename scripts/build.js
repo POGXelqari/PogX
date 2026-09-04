@@ -107,7 +107,7 @@ async function build() {
   // D. Copy Static Media / Branding Assets
   // -------------------------------------------------------------
   console.log('🖼️ Copying Brand Assets...');
-  const assetFiles = ['pogx-logo.png', 'pogx-logo.ico'];
+  const assetFiles = ['pogx-logo.png', 'pogx-logo.ico', 'pogx-hero-bg.jpg'];
   for (const asset of assetFiles) {
     const src = path.join(ROOT_DIR, asset);
     if (fs.existsSync(src)) {
