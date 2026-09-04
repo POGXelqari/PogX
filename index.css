@@ -60,7 +60,7 @@ body {
   flex-direction: column;
   position: relative;
   overflow-x: hidden;
-  background-color: var(--bg-core);
+  background-color: transparent;
 }
 
 /* Screen reader utility */
@@ -86,7 +86,7 @@ body {
 .hero-bg-layer {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
   overflow: hidden;
 }
@@ -304,6 +304,11 @@ body {
 /* ==============================================================================
    Layout Container
    ============================================================================== */
+.main {
+  position: relative;
+  z-index: 1;
+}
+
 .container {
   width: 100%;
   max-width: 1080px;
@@ -831,6 +836,8 @@ body {
    Footer
    ============================================================================== */
 .footer {
+  position: relative;
+  z-index: 1;
   width: 100%;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   padding: 1.5rem 0;
