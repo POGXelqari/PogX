@@ -27,9 +27,11 @@
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <!-- Abstract 3D Background Layer with Vignette and Amber Trails -->
+  <!-- Animated 3D Background Layer with Vignette and Ambient Glow -->
   <div class="hero-bg-layer" aria-hidden="true">
-    <div class="hero-bg-img" style="background-image: url('pogx-hero-bg.jpg');"></div>
+    <video class="hero-bg-video" autoplay loop muted playsinline poster="pogx-hero-bg.jpg" preload="auto">
+      <source src="pogx-hero-bg-animated.mp4" type="video/mp4">
+    </video>
     <div class="hero-bg-vignette"></div>
     <div class="hero-bg-glow"></div>
   </div>

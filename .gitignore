@@ -3,3 +3,4 @@ node_modules
 waitlist.json
 dist
 .DS_Store
+*.gif

@@ -183,6 +183,7 @@ const MIME_TYPES = {
   '.ico': 'image/x-icon',
   '.svg': 'image/svg+xml',
   '.woff2': 'font/woff2',
+  '.mp4': 'video/mp4',
 };
 
 const server = http.createServer(async (req, res) => {
@@ -309,8 +310,28 @@ const server = http.createServer(async (req, res) => {
     const ext = path.extname(resolvedPath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
+    // Support HTTP Range requests for MP4 video streaming and seeking
+    const range = req.headers.range;
+    if (range && ext === '.mp4') {
+      const parts = range.replace(/bytes=/, '').split('-');
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : stats.size - 1;
+      const chunksize = (end - start) + 1;
+      const stream = fs.createReadStream(resolvedPath, { start, end });
+      res.writeHead(206, {
+        'Content-Range': `bytes ${start}-${end}/${stats.size}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunksize,
+        'Content-Type': contentType,
+      });
+      stream.pipe(res);
+      return;
+    }
+
     res.writeHead(200, {
       'Content-Type': contentType,
+      'Content-Length': stats.size,
+      'Accept-Ranges': 'bytes',
       'Cache-Control': 'no-cache, must-revalidate'
     });
     fs.createReadStream(resolvedPath).pipe(res);
